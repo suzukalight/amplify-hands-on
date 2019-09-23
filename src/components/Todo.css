@@ -1,0 +1,23 @@
+.todo {
+  width: 100%;
+  display: table-row;
+}
+
+.todo__checkbox {
+  margin-right: 1rem;
+  display: table-cell;
+}
+
+.todo__text {
+  margin-right: 1rem;
+  display: table-cell;
+}
+
+.todo__delete {
+  border: none;
+  padding: 0.2rem 0.5rem;
+  display: table-cell;
+  color: #fff;
+  background-color: #ff7e7e;
+  border-radius: 0.2rem;
+}
