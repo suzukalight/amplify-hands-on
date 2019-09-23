@@ -1,0 +1,7 @@
+{
+    "dev": {
+        "configLevel": "project",
+        "useProfile": false,
+        "awsConfigFilePath": "/Users/taiki_ikeda/.amplify/awscloudformation/cS3CxLAHk9"
+    }
+}
