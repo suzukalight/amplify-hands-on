@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import Todo from './components/Todo'
 
 const todoList = [
@@ -15,7 +15,7 @@ const todoList = [
   },
   {
     id: '2',
-    name: 'yarn add aws-amplify aws-amplify-react',
+    name: 'yarn add aws-amplify',
     done: true
   }
 ]
@@ -68,9 +68,11 @@ const App: React.FC = () => {
         }}
         className="main"
       >
-        {todos.map((todo: Todo) => (
-          <Todo key={todo.id} id={todo.id} name={todo.name} done={todo.done} onDelete={onDelete} onChange={toggleCheck} />
-        ))}
+        <AnimatePresence>
+          {todos.map((todo: Todo) => (
+            <Todo key={todo.id} id={todo.id} name={todo.name} done={todo.done} onDelete={onDelete} onChange={toggleCheck} />
+          ))}
+        </AnimatePresence>
 
         <motion.div className="add">
           <motion.input
