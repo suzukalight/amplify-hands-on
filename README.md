@@ -19,3 +19,4 @@
 - S3 Storage
 - Authentication: Scratch or `aws-amplify-react` 
 - Cognito User Poolを使ったロール設定（Authority)
+- App Sync + Apollo Client
