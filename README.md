@@ -1,3 +1,5 @@
+# AWS Amplify + React + TypeScript Hands-On
+
 ## 概要
 このレポジトリーはAWS Amplifyで爆速開発をするためのハンズオンです。
 基本的なServerlessバックエンドの構築からGraphQLのAPIに接続するところまでやります。
