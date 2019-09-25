@@ -10,7 +10,8 @@
 - `amplify push`
 - App Sync コンソールでGraphQL Mutation
 - Amplify.configure
-- API.graphql(graphqlOperation(listTodos))
+- API.graphql
+- Type
 
 ## 次やるなら
 - S3 Storage
