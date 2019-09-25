@@ -1,35 +1,54 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import Amplify, { API, graphqlOperation } from 'aws-amplify'
 import { motion, AnimatePresence } from 'framer-motion'
 import Todo from './components/Todo'
 
-const todoList = [
-  {
-    id: '0',
-    name: 'create-react-app amplify-hands-on',
-    done: false
-  },
-  {
-    id: '1',
-    name: 'yarn global add @aws-amplify-cli',
-    done: false
-  },
-  {
-    id: '2',
-    name: 'yarn add aws-amplify',
-    done: true
-  }
-]
+import config from './aws-exports'
+import { CreateTodoInput, UpdateTodoInput, DeleteTodoInput } from './API'
+import { createTodo, updateTodo, deleteTodo } from './graphql/mutations'
+import { listTodos } from './graphql/queries'
+
+Amplify.configure(config)
 
 const App: React.FC = () => {
-  const [todos, setTodos] = useState(todoList)
+  const [todos, setTodos] = useState<Todo[]>([])
   const [text, setText] = useState('')
 
-  const onDelete = (id: string) => {
+  const fetchTodoList = async () => {
+    const resp = await API.graphql(graphqlOperation(listTodos))
+    setTodos(resp.data.listTodos.items)
+  }
+
+  useEffect(() => {
+    fetchTodoList()
+  }, [])
+
+  const onDelete = async (id: string) => {
+    const input: DeleteTodoInput = {
+      id
+    }
+    await API.graphql(graphqlOperation(deleteTodo, { input }))
+
     const updatedTodos = todos.filter(todo => todo.id !== id)
     setTodos(updatedTodos)
   }
 
-  const toggleCheck = (id: string) => {
+  const toggleCheck = async (id: string) => {
+    const todo = todos.find(t => t.id === id)
+    if (!todo) return
+
+    const input: UpdateTodoInput = {
+      id,
+      done: !todo.done
+    }
+    const resp = await API.graphql(
+      graphqlOperation(updateTodo, {
+        input
+      })
+    )
+
+    console.log('resp', resp)
+
     const updatedTodos = todos.map(todo => {
       if (todo.id === id) {
         return {
@@ -42,15 +61,19 @@ const App: React.FC = () => {
     setTodos(updatedTodos)
   }
 
-  const addTodo = () => {
-    const updatedTodos = [
-      ...todos,
-      {
-        id: todos.length.toString(),
-        name: text,
-        done: false
-      }
-    ]
+  const addTodo = async () => {
+    const input: CreateTodoInput = {
+      name: text,
+      done: false
+    }
+    const resp = await API.graphql(
+      graphqlOperation(createTodo, {
+        input
+      })
+    )
+    console.log('resp', resp)
+
+    const updatedTodos = [...todos, resp.data.createTodo]
     setTodos(updatedTodos)
     setText('')
   }
